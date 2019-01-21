@@ -1,56 +1,44 @@
 package com.example.iblog.controller;
 
-import com.example.iblog.dto.TVServiceDto;
+import com.example.iblog.dto.Article;
+import com.example.iblog.services.impl.ArticleServiceImpl;
 import jdk.management.resource.ResourceRequestDeniedException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.*;
-import java.io.ByteArrayInputStream;
 
 @RestController
-@RequestMapping("/tvservices")
-public class TVServicesController {
+@RequestMapping("/article")
+public class ArticleController {
+
+    @Resource
+    ArticleServiceImpl tvServicesService;
 
     @GetMapping()
-    public List<TVServiceDto> getAll() {
-        List<TVServiceDto> list = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2016, Calendar.OCTOBER, 2, 0, 0);
-        list.add(new TVServiceDto(1, "西部世界", 1, calendar.getTime()));
-        list.add(new TVServiceDto(2, "权力的游戏", 7, calendar.getTime()));
-        list.add(new TVServiceDto(3, "真探", 3, calendar.getTime()));
-        list.add(new TVServiceDto(4, "我的天才女友", 3, calendar.getTime()));
-        return list;
+    public List<Article> getAll() {
+        return tvServicesService.getAll();
     }
 
     @GetMapping("/{id}")
-    public TVServiceDto getOne(@PathVariable int id) {
-        List<TVServiceDto> list = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2016, Calendar.OCTOBER, 2, 0, 0);
-        list.add(new TVServiceDto(1, "西部世界", 1, calendar.getTime()));
-        list.add(new TVServiceDto(2, "权力的游戏", 7, calendar.getTime()));
-        list.add(new TVServiceDto(3, "真探", 3, calendar.getTime()));
-        return list.get(id);
+    public Article getOne(@PathVariable int id) {
+        return null;
     }
 
     @PostMapping
-    public TVServiceDto insetOne(@Valid @RequestBody TVServiceDto tvServiceDto) {
-        tvServiceDto.setOriginRelease(new Date());
-        return tvServiceDto;
+    public Article insetOne(@Valid @RequestBody Article article) {
+        return article;
     }
 
     @PutMapping("/{id}")
-    public TVServiceDto updateOne(@PathVariable int id, TVServiceDto tvServiceDto) {
-        return new TVServiceDto(1, "西部世界", 1, new Date());
+    public Article updateOne(@PathVariable int id, Article article) {
+        return article;
     }
 
     @DeleteMapping("/{id}")
