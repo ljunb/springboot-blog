@@ -1,15 +1,13 @@
 package com.example.iblog.controller;
 
-import com.example.iblog.dto.Article;
+import com.example.iblog.bean.Article;
 import com.example.iblog.services.impl.ArticleServiceImpl;
-import jdk.management.resource.ResourceRequestDeniedException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.FileOutputStream;
 import java.util.*;
@@ -18,41 +16,44 @@ import java.util.*;
 @RequestMapping("/article")
 public class ArticleController {
 
-    @Resource
-    ArticleServiceImpl tvServicesService;
+    @Autowired
+    ArticleServiceImpl articleService;
 
     @GetMapping()
-    public List<Article> getAll() {
-        return tvServicesService.getAll();
+    public List<Article> getArticleList() {
+        return articleService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public Article getOne(@PathVariable int id) {
-        return null;
+    @GetMapping("/{articleId}")
+    public Article getArticle(@PathVariable int articleId) {
+        return articleService.getArticle(articleId);
     }
 
-    @PostMapping
-    public Article insetOne(@Valid @RequestBody Article article) {
-        return article;
+    @PostMapping("/create")
+    public Map<String, Object> newArticle(@Valid @RequestBody Article article) {
+        int code = articleService.insertArticle(article);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("message", code == 1 ? "新建文章成功" : "新建文章失败");
+        resultMap.put("status", code);
+        return resultMap;
     }
 
-    @PutMapping("/{id}")
-    public Article updateOne(@PathVariable int id, Article article) {
-        return article;
+    @PutMapping("/modify")
+    public Map<String, Object> updateArticle(@RequestBody Article article) {
+        int code = articleService.updateArticle(article);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("message", code == 1 ? "更新文章成功" : "更新文章失败");
+        resultMap.put("status", code);
+        return resultMap;
     }
 
-    @DeleteMapping("/{id}")
-    public Map<String, String> deleteOne(@PathVariable int id, HttpServletRequest request,
-                                         @RequestParam(value = "delete_reason", required = false) String deleteReason) throws Exception {
-        Map<String, String> result = new HashMap<>();
-        if (id == 1) {
-            result.put("message", request.getRemoteAddr());
-        } else if (id == 2) {
-            throw new RuntimeException("2 not allowed delete");
-        } else {
-            throw new ResourceRequestDeniedException();
-        }
-        return result;
+    @DeleteMapping("/{articleId}")
+    public Map<String, Object> deleteArticle(@PathVariable int articleId) {
+        int code = articleService.deleteArticleById(articleId);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("message", code == 1 ? "删除文章成功" : "删除文章失败");
+        resultMap.put("status", code);
+        return resultMap;
     }
 
     @PostMapping(value = "/{id}/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

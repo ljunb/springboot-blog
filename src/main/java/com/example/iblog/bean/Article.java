@@ -1,19 +1,24 @@
-package com.example.iblog.dto;
+package com.example.iblog.bean;
 
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Past;
 import java.util.Date;
 
 public class Article {
-    @Null private int articleId;
+    private int articleId;
     @NotNull private String title;
     @NotNull private String description;
-    @NotNull private String author;
     @Past private Date publishTime;
+    @NotNull private String author;
+    private int authorId;
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
+    }
 
     public int getArticleId() {
         return articleId;
