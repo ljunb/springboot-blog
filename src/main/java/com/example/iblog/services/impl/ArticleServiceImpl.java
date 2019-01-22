@@ -1,7 +1,7 @@
 package com.example.iblog.services.impl;
 
 import com.example.iblog.dao.ArticleDao;
-import com.example.iblog.bean.Article;
+import com.example.iblog.domain.Article;
 import com.example.iblog.services.ArticleService;
 import org.springframework.stereotype.Service;
 

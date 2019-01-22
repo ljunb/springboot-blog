@@ -1,4 +1,4 @@
-package com.example.iblog.bean;
+package com.example.iblog.domain;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -7,10 +7,19 @@ import java.util.Date;
 public class Article {
     private int articleId;
     @NotNull private String title;
-    @NotNull private String description;
+    private String description;
     @Past private Date publishTime;
+    private Date lastModifyTime;
     @NotNull private String author;
     private int authorId;
+
+    public Date getLastModifyTime() {
+        return lastModifyTime;
+    }
+
+    public void setLastModifyTime(Date lastModifyTime) {
+        this.lastModifyTime = lastModifyTime;
+    }
 
     public int getAuthorId() {
         return authorId;

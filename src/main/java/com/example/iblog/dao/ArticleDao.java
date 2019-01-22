@@ -1,6 +1,6 @@
 package com.example.iblog.dao;
 
-import com.example.iblog.bean.Article;
+import com.example.iblog.domain.Article;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -14,7 +14,25 @@ public interface ArticleDao {
     @Options(useGeneratedKeys = true, keyProperty = "article_id")
     public int insertArticle(Article article);
 
-    @Update("update article set title=#{title}, author=#{author}, description=#{description}, publish_time=#{publishTime} where article_id=#{articleId}")
+//    @Update("update article set title=#{title}, author=#{author}, description=#{description}, publish_time=#{publishTime} where article_id=#{articleId}")
+    @Update({
+            "<script>",
+            "update article",
+            "<set>",
+            "<if test='title != null'>",
+            "title = #{title},",
+            "</if>",
+            "<if test='author != null'>",
+            "author = #{author},",
+            "</if>",
+            "<if test='description != null'>",
+            "description = #{description},",
+            "</if>",
+            "</set>",
+//            "last_modify_time = #{lastModifyTime}",
+            "where article_id = #{articleId}",
+            "</script>"
+    })
     public int updateArticle(Article article);
 
     @Select("select * from article where article_id=#{articleId}")

@@ -1,6 +1,6 @@
 package com.example.iblog.services;
 
-import com.example.iblog.bean.Article;
+import com.example.iblog.domain.Article;
 
 import java.util.List;
 
