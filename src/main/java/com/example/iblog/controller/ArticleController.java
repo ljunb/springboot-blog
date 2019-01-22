@@ -31,8 +31,6 @@ public class ArticleController {
 
     @PostMapping("/create")
     public Map<String, Object> newArticle(@Valid @RequestBody Article article) {
-        article.setPublishTime(new Date());
-        article.setLastModifyTime(new Date());
         int code = articleService.insertArticle(article);
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -43,9 +41,8 @@ public class ArticleController {
 
     @PutMapping("/modify")
     public Map<String, Object> updateArticle(@RequestBody Article article) {
-        article.setLastModifyTime(new Date());
-
         int code = articleService.updateArticle(article);
+
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("message", code == 1 ? "更新文章成功" : "更新文章失败");
         resultMap.put("status", code);

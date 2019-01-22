@@ -3,15 +3,16 @@ package com.example.iblog.services.impl;
 import com.example.iblog.dao.ArticleDao;
 import com.example.iblog.domain.Article;
 import com.example.iblog.services.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-    @Resource
+    @Autowired
     ArticleDao articleDao;
 
     @Override
@@ -21,6 +22,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int insertArticle(Article article) {
+        article.setPublishTime(new Date());
+        article.setLastModifyTime(new Date());
         return articleDao.insertArticle(article);
     }
 
@@ -31,6 +34,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int updateArticle(Article article) {
+        article.setLastModifyTime(new Date());
         return articleDao.updateArticle(article);
     }
 
