@@ -19,4 +19,5 @@ public class Article {
     private Date lastModifyTime;
     @NotNull private String author;
     private int authorId;
+    private String content;
 }

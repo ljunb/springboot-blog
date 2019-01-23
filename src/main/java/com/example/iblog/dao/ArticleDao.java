@@ -10,11 +10,13 @@ public interface ArticleDao {
     @Select("select * from article")
     public List<Article> getAll();
 
-    @Insert("insert into article (title, author, description, publish_time) values (#{title}, #{author}, #{description}, #{publishTime})")
+    @Insert({
+            "insert into article (title, author, content, description, publish_time, last_modify_time)",
+            "values (#{title}, #{author}, #{content}, #{description}, #{publishTime}, #{lastModifyTime})"
+    })
     @Options(useGeneratedKeys = true, keyProperty = "article_id")
     public int insertArticle(Article article);
 
-//    @Update("update article set title=#{title}, author=#{author}, description=#{description}, publish_time=#{publishTime} where article_id=#{articleId}")
     @Update({
             "<script>",
             "update article",
@@ -28,8 +30,11 @@ public interface ArticleDao {
             "<if test='description != null'>",
             "description = #{description},",
             "</if>",
+            "<if test='content != null'>",
+            "content = #{content},",
+            "</if>",
+            "last_modify_time = #{lastModifyTime}",
             "</set>",
-//            "last_modify_time = #{lastModifyTime}",
             "where article_id = #{articleId}",
             "</script>"
     })
