@@ -3,6 +3,7 @@ package com.example.iblog.controller;
 import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
 import com.example.iblog.services.impl.AuthorServiceImpl;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Api("作者APIs")
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
@@ -22,7 +24,15 @@ public class AuthorController {
 
     @ApiOperation("获取作者列表")
     @GetMapping
-    public List<Author> getAllAuthors() { return authorService.getAll(); }
+    public Map<String, Object> getAllAuthors() {
+        List<Author> authors = authorService.getAll();
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("message", authors != null ? "获取作者列表成功" : "获取作者列表失败");
+        resultMap.put("status", authors != null ? 1 : 0);
+        resultMap.put("result", authors);
+        return resultMap;
+    }
 
     @ApiOperation(value = "获取作者信息", notes = "根据authorId获取用户信息")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
