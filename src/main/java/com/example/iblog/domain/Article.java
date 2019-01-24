@@ -6,18 +6,19 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Article {
-    private int articleId;
+    private BigInteger articleId;
     @NotNull private String title;
     private String description;
     @Past private Date publishTime;
     private Date lastModifyTime;
     @NotNull private String author;
-    private int authorId;
+    private BigInteger authorId;
     private String content;
 }

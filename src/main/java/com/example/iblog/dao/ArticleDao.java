@@ -3,6 +3,7 @@ package com.example.iblog.dao;
 import com.example.iblog.domain.Article;
 import org.apache.ibatis.annotations.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public interface ArticleDao {
@@ -41,8 +42,8 @@ public interface ArticleDao {
     public int updateArticle(Article article);
 
     @Select("select * from article where article_id=#{articleId}")
-    public Article getArticle(int articleId);
+    public Article getArticle(BigInteger articleId);
 
     @Delete("delete from article where article_id=#{articleId}")
-    public int deleteArticle(int articleId);
+    public int deleteArticle(BigInteger articleId);
 }

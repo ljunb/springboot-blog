@@ -6,6 +6,7 @@ import com.example.iblog.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticle(int articleId) {
+    public Article getArticle(BigInteger articleId) {
         return articleDao.getArticle(articleId);
     }
 
@@ -39,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int deleteArticleById(int articleId) {
+    public int deleteArticleById(BigInteger articleId) {
         return articleDao.deleteArticle(articleId);
     }
 }

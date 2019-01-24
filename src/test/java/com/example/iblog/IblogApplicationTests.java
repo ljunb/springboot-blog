@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -40,7 +41,7 @@ public class IblogApplicationTests {
     @Test
     public void modifyArticle() {
         Article article = new Article();
-        article.setArticleId(1);
+        article.setArticleId(BigInteger.ONE);
         article.setTitle("article 1 new title");
         article.setDescription("article 1 new desc");
         article.setAuthor("article 1 new author");
@@ -50,14 +51,15 @@ public class IblogApplicationTests {
 
     @Test
     public void getArticle() {
-        Article article = articleService.getArticle(1);
+        Article article = articleService.getArticle(BigInteger.ONE);
         System.out.println("get article >> " + article);
     }
 
     @Test
     public void deleteArticle() {
-        int status = articleService.deleteArticleById(8);
+        int status = articleService.deleteArticleById(BigInteger.ONE);
         System.out.println("delete article status >> " + status);
     }
+
 }
 

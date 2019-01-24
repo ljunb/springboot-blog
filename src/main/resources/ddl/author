@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS 'author';
+
+CREATE TABLE `author` (
+  `author_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '作者id',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '姓名',
+  `sex` int(1) DEFAULT NULL COMMENT '性别',
+  `birthday` date DEFAULT NULL COMMENT '生日',
+  `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '住址',
+  PRIMARY KEY (`author_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
