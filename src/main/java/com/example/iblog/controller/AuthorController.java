@@ -24,15 +24,20 @@ public class AuthorController {
 
     @ApiOperation("获取作者列表")
     @GetMapping
-    public ResponseResult getAllAuthors() {
-        List<Author> authors = authorService.getAll();
-        ResponseResult responseResult = new ResponseResult();
-        if (authors != null) {
-            responseResult.setResult(authors);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-        } else {
+    public ResponseResult<List<Author>> getAllAuthors() {
+        ResponseResult<List<Author>> responseResult = new ResponseResult();
+        try {
+            List<Author> authors = authorService.getAll();
+            if (authors != null) {
+                responseResult.setResult(authors);
+                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            } else {
+                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
+                responseResult.setMessage(ServiceErrorCode.REMOVE_RESOURCE_ERROR.getMessage());
+            }
+        } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(ServiceErrorCode.REMOVE_RESOURCE_ERROR.getMessage());
+            responseResult.setMessage(e.getMessage());
         }
         return responseResult;
     }
@@ -40,15 +45,20 @@ public class AuthorController {
     @ApiOperation(value = "获取作者信息", notes = "根据authorId获取用户信息")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @GetMapping("/{authorId}")
-    public ResponseResult getAuthor(@PathVariable BigInteger authorId) {
-        Author author = authorService.getAuthor(authorId);
-        ResponseResult responseResult = new ResponseResult();
-        if (author != null) {
-            responseResult.setResult(author);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-        } else {
+    public ResponseResult<Author> getAuthor(@PathVariable BigInteger authorId) {
+        ResponseResult<Author> responseResult = new ResponseResult();
+        try {
+            Author author = authorService.getAuthor(authorId);
+            if (author != null) {
+                responseResult.setResult(author);
+                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            } else {
+                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
+                responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            }
+        } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            responseResult.setMessage(e.getMessage());
         }
         return responseResult;
     }
@@ -72,15 +82,20 @@ public class AuthorController {
     @ApiOperation(value = "获取文章列表", notes = "根据authorId获取该作者下的所有文章")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @GetMapping("/{authorId}/articlelist")
-    public ResponseResult getArticleListByAuthorId(@PathVariable BigInteger authorId) {
-        List<Article> articleList = authorService.getArticleList(authorId);
-        ResponseResult responseResult = new ResponseResult();
-        if (articleList != null) {
-            responseResult.setResult(articleList);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-        } else {
+    public ResponseResult<List<Article>> getArticleListByAuthorId(@PathVariable BigInteger authorId) {
+        ResponseResult<List<Article>> responseResult = new ResponseResult();
+        try {
+            List<Article> articleList = authorService.getArticleList(authorId);
+            if (articleList != null) {
+                responseResult.setResult(articleList);
+                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            } else {
+                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
+                responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            }
+        } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            responseResult.setMessage(e.getMessage());
         }
         return responseResult;
     }

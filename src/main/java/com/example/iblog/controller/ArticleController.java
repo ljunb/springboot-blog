@@ -25,15 +25,20 @@ public class ArticleController {
 
     @ApiOperation("获取所有文章列表")
     @GetMapping()
-    public ResponseResult getArticleList() {
-        List<Article> articleList = articleService.getAll();
-        ResponseResult responseResult = new ResponseResult();
-        if (articleList != null) {
-            responseResult.setResult(articleList);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-        } else {
+    public ResponseResult<List<Article>> getArticleList() {
+        ResponseResult<List<Article>> responseResult = new ResponseResult();
+        try {
+            List<Article> articleList = articleService.getAll();
+            if (articleList != null) {
+                responseResult.setResult(articleList);
+                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            } else {
+                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
+                responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            }
+        } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            responseResult.setMessage(e.getMessage());
         }
         return responseResult;
     }
@@ -41,15 +46,20 @@ public class ArticleController {
     @ApiOperation(value = "获取文章信息", notes = "根据articleId获取文章信息")
     @ApiImplicitParam(name = "articleId", value = "文章id", required = true, dataType = "number")
     @GetMapping("/{articleId}")
-    public ResponseResult getArticle(@PathVariable BigInteger articleId) {
-        Article article = articleService.getArticle(articleId);
-        ResponseResult responseResult = new ResponseResult();
-        if (article != null) {
-            responseResult.setResult(article);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-        } else {
+    public ResponseResult<Article> getArticle(@PathVariable BigInteger articleId) {
+        ResponseResult<Article> responseResult = new ResponseResult();
+        try {
+            Article article = articleService.getArticle(articleId);
+            if (article != null) {
+                responseResult.setResult(article);
+                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            } else {
+                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
+                responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            }
+        } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+            responseResult.setMessage(e.getMessage());
         }
         return responseResult;
     }
