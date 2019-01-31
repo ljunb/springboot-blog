@@ -6,12 +6,10 @@ import com.example.iblog.common.ServiceErrorCode;
 import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
 import com.example.iblog.services.impl.AuthorServiceImpl;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

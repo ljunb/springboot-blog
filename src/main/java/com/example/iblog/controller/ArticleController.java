@@ -4,7 +4,6 @@ import com.example.iblog.common.ResponseResult;
 import com.example.iblog.common.ServiceErrorCode;
 import com.example.iblog.domain.Article;
 import com.example.iblog.services.impl.ArticleServiceImpl;
-import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -71,6 +70,7 @@ public class ArticleController {
         ResponseResult responseResult = new ResponseResult();
         try {
             articleService.insertArticle(article);
+            responseResult.setSuccess(true);
             responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.INSERT_RESOURCE_ERROR.getCode());
@@ -86,6 +86,7 @@ public class ArticleController {
         ResponseResult responseResult = new ResponseResult();
         try {
             articleService.updateArticle(article);
+            responseResult.setSuccess(true);
             responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.MODIFY_RESOURCE_ERROR.getCode());
@@ -101,6 +102,7 @@ public class ArticleController {
         ResponseResult responseResult = new ResponseResult();
         try {
             articleService.deleteArticleById(articleId);
+            responseResult.setSuccess(true);
             responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.REMOVE_RESOURCE_ERROR.getCode());

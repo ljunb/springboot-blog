@@ -5,7 +5,7 @@
 ## 开始
 
 作者信息表：
-```sql
+```mysql
 DROP TABLE IF EXISTS 'author';
 
 CREATE TABLE `author` (
@@ -19,7 +19,7 @@ CREATE TABLE `author` (
 ```
 
 文章信息表：
-```sql
+```mysql
 DROP TABLE IF EXISTS 'article';
 
 CREATE TABLE `article` (
@@ -34,6 +34,20 @@ CREATE TABLE `article` (
   `source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文章来源',
   PRIMARY KEY (`article_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+```
+
+文章评论表：
+```mysql
+DROP TABLE IF EXISTS 'comment';
+
+CREATE TABLE `comment` (
+  `comment_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '评论id',
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '评论内容',
+  `publish_time` date DEFAULT NULL COMMENT '评论发布时间',
+  `like_count` bigint(20) DEFAULT NULL COMMENT '点赞数',
+  `article_id` bigint(20) unsigned DEFAULT NULL COMMENT '文章id',
+  PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
 
 ## 接口说明

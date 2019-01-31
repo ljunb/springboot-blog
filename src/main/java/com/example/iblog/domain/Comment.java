@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.math.BigInteger;
 import java.util.Date;
@@ -11,12 +12,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
+public class Comment {
     @Null
-    private BigInteger authorId;
-    private String name;
-    private String avatar;
-    private int sex;
-    private Date birthday;
-    private String address;
+    private BigInteger commentId;
+    private String content;
+    private Date publishTime;
+    private BigInteger likeCount;
+    @NotNull
+    private BigInteger articleId;
 }

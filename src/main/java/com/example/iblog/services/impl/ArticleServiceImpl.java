@@ -1,7 +1,9 @@
 package com.example.iblog.services.impl;
 
 import com.example.iblog.dao.ArticleDao;
+import com.example.iblog.dao.CommentDao;
 import com.example.iblog.domain.Article;
+import com.example.iblog.domain.Comment;
 import com.example.iblog.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,9 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
-    ArticleDao articleDao;
+    private ArticleDao articleDao;
+    @Autowired
+    private CommentDao commentDao;
 
     @Override
     public List<Article> getAll() {
@@ -30,7 +34,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticle(BigInteger articleId) {
-        return articleDao.getArticle(articleId);
+        List<Comment> commentList = commentDao.findCommentList(articleId);
+        Article article = articleDao.getArticle(articleId);
+        article.setCommentList(commentList);
+        return article;
     }
 
     @Override

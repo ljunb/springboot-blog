@@ -17,9 +17,9 @@ public interface AuthorDao {
 
     @Insert({
             "insert into author",
-            "(name, sex, birthday, address)",
+            "(name, sex, birthday, address, avatar)",
             "values",
-            "(#{name}, #{sex}, #{birthday}, #{address})"
+            "(#{name}, #{sex}, #{birthday}, #{address}, #{avatar})"
     })
     @Options(useGeneratedKeys = true, keyProperty = "author_id")
     public int createAuthor(Author author);
@@ -39,6 +39,9 @@ public interface AuthorDao {
             "</if>",
             "<if test='birthday != null'>",
             "birthday = #{birthday}",
+            "</if>",
+            "<if test='avatar != null'>",
+            "avatar = #{avatar}",
             "</if>",
             "</set>",
             "where author_id = #{authorId}",

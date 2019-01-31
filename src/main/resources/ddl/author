@@ -6,5 +6,6 @@ CREATE TABLE `author` (
   `sex` int(1) DEFAULT NULL COMMENT '性别',
   `birthday` date DEFAULT NULL COMMENT '生日',
   `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '住址',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
