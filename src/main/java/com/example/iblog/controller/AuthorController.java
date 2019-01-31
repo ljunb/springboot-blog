@@ -1,13 +1,17 @@
 package com.example.iblog.controller;
 
+import com.example.iblog.common.PageResponseResult;
 import com.example.iblog.common.ResponseResult;
 import com.example.iblog.common.ServiceErrorCode;
 import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
 import com.example.iblog.services.impl.AuthorServiceImpl;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,22 +86,13 @@ public class AuthorController {
     @ApiOperation(value = "获取文章列表", notes = "根据authorId获取该作者下的所有文章")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @GetMapping("/{authorId}/articlelist")
-    public ResponseResult<List<Article>> getArticleListByAuthorId(@PathVariable BigInteger authorId) {
-        ResponseResult<List<Article>> responseResult = new ResponseResult();
-        try {
-            List<Article> articleList = authorService.getArticleList(authorId);
-            if (articleList != null) {
-                responseResult.setResult(articleList);
-                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-            } else {
-                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-                responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
-            }
-        } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
-        }
-        return responseResult;
+    public PageResponseResult<Article> getArticleListByAuthorId(
+            @PathVariable BigInteger authorId,
+            @RequestParam(defaultValue = "1", value = "pageNum") Integer pageNum,
+            @RequestParam(defaultValue = "10", value = "pageSize") Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Article> articleList = authorService.getArticleList(authorId);
+        return new PageResponseResult<Article>(articleList);
     }
 
     @ApiOperation(value = "更新作者信息", notes = "根据Author实体更新作者信息")
