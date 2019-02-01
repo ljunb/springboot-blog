@@ -27,7 +27,7 @@ public class ArticleController {
     public ResponseResult<List<Article>> getArticleList() {
         ResponseResult<List<Article>> responseResult = new ResponseResult();
         try {
-            List<Article> articleList = articleService.getAll();
+            List<Article> articleList = articleService.getArticleList();
             if (articleList != null) {
                 responseResult.setResult(articleList);
                 responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
@@ -66,10 +66,10 @@ public class ArticleController {
     @ApiOperation(value = "添加文章", notes = "根据Article对象创建文章")
     @ApiImplicitParam(name = "article", value = "文章对象实体", required = true, dataType = "Article")
     @PostMapping("/create")
-    public ResponseResult newArticle(@Valid @RequestBody Article article) {
+    public ResponseResult createArticle(@Valid @RequestBody Article article) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            articleService.insertArticle(article);
+            articleService.createArticle(article);
             responseResult.setSuccess(true);
             responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
@@ -82,10 +82,10 @@ public class ArticleController {
     @ApiOperation(value = "更新文章信息", notes = "根据Article实体更新文章信息")
     @ApiImplicitParam(name = "article", value = "文章对象实体", required = true, dataType = "Article")
     @PutMapping("/modify")
-    public ResponseResult updateArticle(@RequestBody Article article) {
+    public ResponseResult modifyArticle(@RequestBody Article article) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            articleService.updateArticle(article);
+            articleService.modifyArticle(article);
             responseResult.setSuccess(true);
             responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
@@ -98,10 +98,10 @@ public class ArticleController {
     @ApiOperation(value = "删除文章", notes = "根据authorId删除指定文章")
     @ApiImplicitParam(name = "articleId", value = "文章id", required = true, dataType = "number")
     @DeleteMapping("/{articleId}")
-    public ResponseResult deleteArticle(@PathVariable BigInteger articleId) {
+    public ResponseResult removeArticleById(@PathVariable BigInteger articleId) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            articleService.deleteArticleById(articleId);
+            articleService.removeArticleById(articleId);
             responseResult.setSuccess(true);
             responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {

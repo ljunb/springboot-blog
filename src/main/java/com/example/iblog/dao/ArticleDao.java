@@ -9,11 +9,11 @@ import java.util.List;
 public interface ArticleDao {
 
     @Select("select * from article")
-    public List<Article> getAll();
+    public List<Article> findArticleList();
 
     @Insert({
-            "insert into article (title, author, content, description, publish_time, last_modify_time)",
-            "values (#{title}, #{author}, #{content}, #{description}, #{publishTime}, #{lastModifyTime})"
+            "insert into article (title, author_id, content, description, publish_time, last_modify_time, source)",
+            "values (#{title}, #{authorId}, #{content}, #{description}, #{publishTime}, #{lastModifyTime}, #{source})"
     })
     @Options(useGeneratedKeys = true, keyProperty = "article_id")
     public int insertArticle(Article article);
@@ -25,16 +25,17 @@ public interface ArticleDao {
             "<if test='title != null'>",
             "title = #{title},",
             "</if>",
-            "<if test='author != null'>",
-            "author = #{author},",
-            "</if>",
             "<if test='description != null'>",
             "description = #{description},",
             "</if>",
             "<if test='content != null'>",
             "content = #{content},",
             "</if>",
-            "last_modify_time = #{lastModifyTime}",
+            "<if test='source != null'>",
+            "source = #{source},",
+            "</if>",
+            "last_modify_time = #{lastModifyTime},",
+            "author_id = #{authorId}",
             "</set>",
             "where article_id = #{articleId}",
             "</script>"
@@ -42,7 +43,7 @@ public interface ArticleDao {
     public int updateArticle(Article article);
 
     @Select("select * from article where article_id=#{articleId}")
-    public Article getArticle(BigInteger articleId);
+    public Article findArticle(BigInteger articleId);
 
     @Delete("delete from article where article_id=#{articleId}")
     public int deleteArticle(BigInteger articleId);

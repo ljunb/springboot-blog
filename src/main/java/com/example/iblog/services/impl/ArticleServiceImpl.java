@@ -1,8 +1,10 @@
 package com.example.iblog.services.impl;
 
 import com.example.iblog.dao.ArticleDao;
+import com.example.iblog.dao.AuthorDao;
 import com.example.iblog.dao.CommentDao;
 import com.example.iblog.domain.Article;
+import com.example.iblog.domain.Author;
 import com.example.iblog.domain.Comment;
 import com.example.iblog.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +20,26 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleDao articleDao;
     @Autowired
+    private AuthorDao authorDao;
+    @Autowired
     private CommentDao commentDao;
 
     @Override
-    public List<Article> getAll() {
-        return articleDao.getAll();
+    public List<Article> getArticleList() {
+        List<Article> articleList = articleDao.findArticleList();
+        for (Article article: articleList) {
+            Author author = authorDao.findAuthor(article.getAuthorId());
+            article.setAuthorName(author.getName());
+
+            List<Comment> commentList = commentDao.findCommentList(article.getArticleId());
+            article.setCommentList(commentList);
+        }
+
+        return articleList;
     }
 
     @Override
-    public int insertArticle(Article article) {
+    public int createArticle(Article article) {
         article.setPublishTime(new Date());
         article.setLastModifyTime(new Date());
         return articleDao.insertArticle(article);
@@ -35,19 +48,21 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article getArticle(BigInteger articleId) {
         List<Comment> commentList = commentDao.findCommentList(articleId);
-        Article article = articleDao.getArticle(articleId);
+        Article article = articleDao.findArticle(articleId);
+        Author author = authorDao.findAuthor(article.getAuthorId());
         article.setCommentList(commentList);
+        article.setAuthorName(author.getName());
         return article;
     }
 
     @Override
-    public int updateArticle(Article article) {
+    public int modifyArticle(Article article) {
         article.setLastModifyTime(new Date());
         return articleDao.updateArticle(article);
     }
 
     @Override
-    public int deleteArticleById(BigInteger articleId) {
+    public int removeArticleById(BigInteger articleId) {
         return articleDao.deleteArticle(articleId);
     }
 }

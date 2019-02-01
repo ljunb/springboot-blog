@@ -10,10 +10,10 @@ import java.util.List;
 public interface AuthorDao {
 
     @Select("select * from author")
-    public List<Author> getAll();
+    public List<Author> findAuthorList();
 
     @Select("select * from author where author_id = #{authorId}")
-    public Author getAuthor(BigInteger authorId);
+    public Author findAuthor(BigInteger authorId);
 
     @Insert({
             "insert into author",
@@ -22,7 +22,7 @@ public interface AuthorDao {
             "(#{name}, #{sex}, #{birthday}, #{address}, #{avatar})"
     })
     @Options(useGeneratedKeys = true, keyProperty = "author_id")
-    public int createAuthor(Author author);
+    public int insertAuthor(Author author);
 
     @Update({
             "<script>",
@@ -53,5 +53,5 @@ public interface AuthorDao {
     public int deleteAuthorById(BigInteger authorId);
 
     @Select("select * from article where author_id = #{authorId}")
-    public List<Article> getArticleList(BigInteger authorId);
+    public List<Article> findArticleList(BigInteger authorId);
 }

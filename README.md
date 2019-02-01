@@ -26,14 +26,13 @@ CREATE TABLE `article` (
   `article_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(100) DEFAULT NULL COMMENT '文章标题',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '文章简介',
-  `author` varchar(50) DEFAULT NULL COMMENT '文章作者',
   `publish_time` date DEFAULT NULL COMMENT '发布时间',
   `last_modify_time` date DEFAULT NULL COMMENT '最后修改时间',
   `author_id` bigint(20) unsigned DEFAULT NULL COMMENT '作者id',
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文章内容',
   `source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文章来源',
   PRIMARY KEY (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
 
 文章评论表：

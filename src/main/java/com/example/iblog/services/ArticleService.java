@@ -6,9 +6,9 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface ArticleService {
-    public List<Article> getAll();
+    public List<Article> getArticleList();
     public Article getArticle(BigInteger articleId);
-    public int insertArticle(Article article);
-    public int updateArticle(Article article);
-    public int deleteArticleById(BigInteger articleId);
+    public int createArticle(Article article);
+    public int modifyArticle(Article article);
+    public int removeArticleById(BigInteger articleId);
 }

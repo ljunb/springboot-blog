@@ -26,10 +26,10 @@ public class AuthorController {
 
     @ApiOperation("获取作者列表")
     @GetMapping
-    public ResponseResult<List<Author>> getAllAuthors() {
+    public ResponseResult<List<Author>> getAuthorList() {
         ResponseResult<List<Author>> responseResult = new ResponseResult();
         try {
-            List<Author> authors = authorService.getAll();
+            List<Author> authors = authorService.getAuthorList();
             if (authors != null) {
                 responseResult.setResult(authors);
                 responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
@@ -96,10 +96,10 @@ public class AuthorController {
     @ApiOperation(value = "更新作者信息", notes = "根据Author实体更新作者信息")
     @ApiImplicitParam(name = "author", value = "作者对象实体", required = true, dataType = "Author")
     @PutMapping("/modify")
-    public ResponseResult updateArticle(@RequestBody Author author) {
+    public ResponseResult modifyAuthor(@RequestBody Author author) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            authorService.updateAuthor(author);
+            authorService.modifyAuthor(author);
             responseResult.setSuccess(true);
             responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
@@ -112,10 +112,10 @@ public class AuthorController {
     @ApiOperation(value = "删除作者", notes = "根据authorId删除指定作者")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @DeleteMapping("/{authorId}")
-    public ResponseResult deleteArticle(@PathVariable BigInteger authorId) {
+    public ResponseResult removeAuthor(@PathVariable BigInteger authorId) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            authorService.deleteAuthorById(authorId);
+            authorService.removeAuthorById(authorId);
             responseResult.setSuccess(true);
             responseResult.setMessage("删除作者成功");
         } catch (Exception e) {

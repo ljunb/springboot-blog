@@ -24,7 +24,7 @@ public class IblogApplicationTests {
 
     @Test
     public void getArticleList() {
-        List<Article> articleList = articleService.getAll();
+        List<Article> articleList = articleService.getArticleList();
         System.out.println("get article list >> \n " + articleList);
     }
 
@@ -33,8 +33,8 @@ public class IblogApplicationTests {
         Article article = new Article();
         article.setTitle("article 9");
         article.setDescription("desc 9");
-        article.setAuthor("ljunb");
-        int status = articleService.insertArticle(article);
+        article.setAuthorName("ljunb");
+        int status = articleService.createArticle(article);
         System.out.println("create article status >> " + status);
     }
 
@@ -44,8 +44,8 @@ public class IblogApplicationTests {
         article.setArticleId(BigInteger.ONE);
         article.setTitle("article 1 new title");
         article.setDescription("article 1 new desc");
-        article.setAuthor("article 1 new author");
-        int status = articleService.updateArticle(article);
+        article.setAuthorName("article 1 new author");
+        int status = articleService.modifyArticle(article);
         System.out.println("modify article status >> " + status);
     }
 
@@ -57,7 +57,7 @@ public class IblogApplicationTests {
 
     @Test
     public void deleteArticle() {
-        int status = articleService.deleteArticleById(BigInteger.ONE);
+        int status = articleService.removeArticleById(BigInteger.ONE);
         System.out.println("delete article status >> " + status);
     }
 
