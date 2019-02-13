@@ -15,18 +15,48 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Article {
+    /**
+     * 文章id
+     */
     @Null
     private BigInteger articleId;
+    /**
+     * 文章标题
+     */
     @NotNull
     private String title;
+    /**
+     * 文章简介
+     */
     private String description;
+    /**
+     * 文章发布时间
+     */
     @Past
     private Date publishTime;
+    /**
+     * 最后更新时间
+     */
     private Date lastModifyTime;
+    /**
+     * 文章作者id
+     */
     @NotNull
     private BigInteger authorId;
+    /**
+     * 作者姓名
+     */
     private String authorName;
+    /**
+     * 文章详细内容
+     */
     private String content;
+    /**
+     * 文章来源
+     */
     private String source;
+    /**
+     * 评论列表
+     */
     private List<Comment> commentList;
 }

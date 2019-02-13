@@ -1,5 +1,6 @@
 package com.example.iblog.services.impl;
 
+import com.example.iblog.dao.ArticleDao;
 import com.example.iblog.dao.AuthorDao;
 import com.example.iblog.dao.CommentDao;
 import com.example.iblog.domain.Article;
@@ -18,6 +19,8 @@ public class AuthorServiceImpl implements AuthorService {
     private AuthorDao authorDao;
     @Autowired
     private CommentDao commentDao;
+    @Autowired
+    private ArticleDao articleDao;
 
     @Override
     public List<Author> getAuthorList() {
@@ -52,9 +55,33 @@ public class AuthorServiceImpl implements AuthorService {
         for (Article article: articleList) {
             List<Comment> commentList = commentDao.findCommentList(article.getArticleId());
             article.setAuthorName(author.getName());
+
+            for (Comment comment: commentList) {
+                // 评论人
+                Author commenter = authorDao.findAuthor(comment.getCommenterId());
+                if (commenter != null) {
+                    comment.setCommenter(commenter.getName());
+                }
+
+                // 被回复的评论
+                Comment beReplyComment = commentDao.findComment(comment.getBeReplyCommentId());
+                // 被回复的评论人
+                if (beReplyComment != null) {
+                    Author beReplyCommenter = authorDao.findAuthor(beReplyComment.getCommenterId());
+                    if (beReplyCommenter != null) {
+                        comment.setBeReplyCommenter(beReplyCommenter.getName());
+                    }
+                }
+            }
+
             article.setCommentList(commentList);
         }
 
         return articleList;
+    }
+
+    @Override
+    public List<Comment> getCommentList(BigInteger authorId) {
+        return commentDao.findAuthorCommentList(authorId);
     }
 }

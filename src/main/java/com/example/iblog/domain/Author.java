@@ -12,11 +12,29 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Author {
+    /**
+     * 作者id
+     */
     @Null
     private BigInteger authorId;
+    /**
+     * 姓名
+     */
     private String name;
+    /**
+     * 头像
+     */
     private String avatar;
+    /**
+     * 性别
+     */
     private int sex;
+    /**
+     * 生日
+     */
     private Date birthday;
+    /**
+     * 住址
+     */
     private String address;
 }

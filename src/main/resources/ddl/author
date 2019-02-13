@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS 'author';
+DROP TABLE IF EXISTS author;
 
 CREATE TABLE `author` (
   `author_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '作者id',

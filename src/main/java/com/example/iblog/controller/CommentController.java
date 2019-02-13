@@ -38,4 +38,20 @@ public class CommentController {
         }
         return responseResult;
     }
+
+    @ApiOperation(value = "回复文章评论", notes = "根据评论对象回复文章评论")
+    @ApiImplicitParam(name = "comment", value = "回复的评论对象实体", required = true, dataType = "Comment")
+    @PostMapping("/reply")
+    public ResponseResult replyComment(@Valid @RequestBody Comment comment) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            commentService.createReply(comment);
+            responseResult.setSuccess(true);
+            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+        } catch (Exception e) {
+            responseResult.setErrorCode(ServiceErrorCode.MODIFY_RESOURCE_ERROR.getCode());
+            responseResult.setMessage(ServiceErrorCode.MODIFY_RESOURCE_ERROR.getMessage());
+        }
+        return responseResult;
+    }
 }

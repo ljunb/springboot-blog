@@ -2,11 +2,16 @@
 
 基于 SpringBoot + Mybatis + MySQL 实现个人博客的 RESTful 服务，并使用 Swagger2 实现接口文档。
 
+## 已有功能
+* 作者：针对作者信息的增删改查、某作者的所有博客、某作者的所有评论
+* 文章：针对文章信息的增删改查
+* 评论：发表评论、回复评论
+
 ## 开始
 
 作者信息表：
 ```mysql
-DROP TABLE IF EXISTS 'author';
+DROP TABLE IF EXISTS author;
 
 CREATE TABLE `author` (
   `author_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '作者id',
@@ -20,7 +25,7 @@ CREATE TABLE `author` (
 
 文章信息表：
 ```mysql
-DROP TABLE IF EXISTS 'article';
+DROP TABLE IF EXISTS article;
 
 CREATE TABLE `article` (
   `article_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -37,7 +42,7 @@ CREATE TABLE `article` (
 
 文章评论表：
 ```mysql
-DROP TABLE IF EXISTS 'comment';
+DROP TABLE IF EXISTS comment;
 
 CREATE TABLE `comment` (
   `comment_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '评论id',
@@ -45,6 +50,8 @@ CREATE TABLE `comment` (
   `publish_time` date DEFAULT NULL COMMENT '评论发布时间',
   `like_count` bigint(20) DEFAULT NULL COMMENT '点赞数',
   `article_id` bigint(20) unsigned DEFAULT NULL COMMENT '文章id',
+  `commenter_id` bigint(20) unsigned DEFAULT NULL COMMENT '评论人id',
+  `be_reply_comment_id` bigint(20) unsigned DEFAULT NULL COMMENT '被回复的评论id',
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```

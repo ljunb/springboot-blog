@@ -32,6 +32,23 @@ public class ArticleServiceImpl implements ArticleService {
             article.setAuthorName(author.getName());
 
             List<Comment> commentList = commentDao.findCommentList(article.getArticleId());
+            for (Comment comment: commentList) {
+                // 评论人
+                Author commenter = authorDao.findAuthor(comment.getCommenterId());
+                if (commenter != null) {
+                    comment.setCommenter(commenter.getName());
+                }
+
+                // 被回复的评论
+                Comment beReplyComment = commentDao.findComment(comment.getBeReplyCommentId());
+                // 被回复的评论人
+                if (beReplyComment != null) {
+                    Author beReplyCommenter = authorDao.findAuthor(beReplyComment.getCommenterId());
+                    if (beReplyCommenter != null) {
+                        comment.setBeReplyCommenter(beReplyCommenter.getName());
+                    }
+                }
+            }
             article.setCommentList(commentList);
         }
 
@@ -50,8 +67,27 @@ public class ArticleServiceImpl implements ArticleService {
         List<Comment> commentList = commentDao.findCommentList(articleId);
         Article article = articleDao.findArticle(articleId);
         Author author = authorDao.findAuthor(article.getAuthorId());
+
+        for (Comment comment: commentList) {
+            // 评论人
+            Author commenter = authorDao.findAuthor(comment.getCommenterId());
+            if (commenter != null) {
+                comment.setCommenter(commenter.getName());
+            }
+
+            // 被回复的评论
+            Comment beReplyComment = commentDao.findComment(comment.getBeReplyCommentId());
+            // 被回复的评论人
+            if (beReplyComment != null) {
+                Author beReplyCommenter = authorDao.findAuthor(beReplyComment.getCommenterId());
+                if (beReplyCommenter != null) {
+                    comment.setBeReplyCommenter(beReplyCommenter.getName());
+                }
+            }
+        }
         article.setCommentList(commentList);
         article.setAuthorName(author.getName());
+
         return article;
     }
 

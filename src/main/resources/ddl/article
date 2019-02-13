@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS 'article';
+DROP TABLE IF EXISTS article;
 
 CREATE TABLE `article` (
   `article_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,

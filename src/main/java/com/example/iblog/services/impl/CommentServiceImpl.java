@@ -25,4 +25,10 @@ public class CommentServiceImpl implements CommentService {
         comment.setPublishTime(new Date());
         return commentDao.insertComment(comment);
     }
+
+    @Override
+    public int createReply(Comment comment) {
+        comment.setPublishTime(new Date());
+        return commentDao.updateCommentWithReply(comment);
+    }
 }

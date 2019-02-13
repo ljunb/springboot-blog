@@ -5,6 +5,7 @@ import com.example.iblog.common.ResponseResult;
 import com.example.iblog.common.ServiceErrorCode;
 import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
+import com.example.iblog.domain.Comment;
 import com.example.iblog.services.impl.AuthorServiceImpl;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
@@ -120,6 +121,21 @@ public class AuthorController {
             responseResult.setMessage("删除作者成功");
         } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.REMOVE_RESOURCE_ERROR.getCode());
+            responseResult.setMessage(e.getMessage());
+        }
+        return responseResult;
+    }
+
+    @ApiOperation(value = "获取作者评论列表", notes = "根据authorId获取该作者的所有评论")
+    @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
+    @GetMapping("/{authorId}/commentlist")
+    public ResponseResult getArticleListByAuthorId(@PathVariable BigInteger authorId) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            List<Comment> commentList = authorService.getCommentList(authorId);
+            responseResult.setResult(commentList);
+        } catch (Exception e) {
+            responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
             responseResult.setMessage(e.getMessage());
         }
         return responseResult;
