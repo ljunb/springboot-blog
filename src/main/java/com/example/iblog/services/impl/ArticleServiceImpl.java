@@ -48,12 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticle(BigInteger articleId) {
-        Article article = articleDao.findArticle(articleId);
-        Author author = authorDao.findAuthor(article.getAuthorId());
-        List<Comment> commentList = RequestHelper.getArticleCommentList(commentDao, authorDao, article);
-        article.setCommentList(commentList);
-        article.setAuthorName(author.getName());
-        return article;
+        return articleDao.findArticle(articleId);
     }
 
     @Override

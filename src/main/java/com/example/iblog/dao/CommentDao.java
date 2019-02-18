@@ -17,17 +17,17 @@ public interface CommentDao {
 
     @Insert({
             "insert into comment",
-            "(content, article_id, commenter_id, publish_time, like_count)",
+            "(content, article_id, commenter, commenter_id, publish_time, like_count, be_reply_commenter, be_reply_comment_id)",
             "values",
-            "(#{content}, #{articleId}, #{commenterId}, #{publishTime}, #{likeCount})"
+            "(#{content}, #{articleId}, #{commenter}, #{commenterId}, #{publishTime}, #{likeCount}, #{beReplyCommenter}, #{beReplyCommentId})"
     })
     public int insertComment(Comment comment);
 
     @Insert({
             "insert into comment",
-            "(content, article_id, publish_time, commenter_id, be_reply_comment_id)",
+            "(content, article_id, publish_time, commenter_id, be_reply_comment_id, be_reply_comment_er)",
             "values",
-            "(#{content}, #{articleId}, #{publishTime}, #{commenterId}, #{beReplyCommentId})"
+            "(#{content}, #{articleId}, #{publishTime}, #{commenterId}, #{beReplyCommentId}, #{beReplyCommenter})"
     })
     public int updateCommentWithReply(Comment comment);
 

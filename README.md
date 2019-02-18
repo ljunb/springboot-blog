@@ -48,10 +48,12 @@ CREATE TABLE `comment` (
   `comment_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '评论id',
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '评论内容',
   `publish_time` date DEFAULT NULL COMMENT '评论发布时间',
-  `like_count` bigint(20) DEFAULT NULL COMMENT '点赞数',
+  `like_count` bigint(20) unsigned DEFAULT '0' COMMENT '点赞数',
   `article_id` bigint(20) unsigned DEFAULT NULL COMMENT '文章id',
+  `commenter` varchar(50) DEFAULT NULL COMMENT '评论人姓名',
   `commenter_id` bigint(20) unsigned DEFAULT NULL COMMENT '评论人id',
-  `be_reply_comment_id` bigint(20) unsigned DEFAULT NULL COMMENT '被回复的评论id',
+  `be_reply_comment_id` bigint(20) unsigned DEFAULT NULL COMMENT '被回复的评论人id',
+  `be_reply_commenter` varchar(50) DEFAULT NULL COMMENT '被回复的评论人姓名',
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```

@@ -1,6 +1,8 @@
 package com.example.iblog.services.impl;
 
+import com.example.iblog.dao.AuthorDao;
 import com.example.iblog.dao.CommentDao;
+import com.example.iblog.domain.Author;
 import com.example.iblog.domain.Comment;
 import com.example.iblog.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentDao commentDao;
+    @Autowired
+    private AuthorDao authorDao;
 
     @Override
     public List<Comment> getCommentList(BigInteger articleId) {
@@ -22,7 +26,15 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int createComment(Comment comment) {
+        Author author = authorDao.findAuthor(comment.getCommenterId());
         comment.setPublishTime(new Date());
+        comment.setCommenter(author.getName());
+        // 当前是回复的评论
+        if (comment.getBeReplyCommentId() != null) {
+            Comment beReplyComment = commentDao.findComment(comment.getBeReplyCommentId());
+            Author beReplyAuthor = authorDao.findAuthor(beReplyComment.getCommenterId());
+            comment.setBeReplyCommenter(beReplyAuthor.getName());
+        }
         return commentDao.insertComment(comment);
     }
 
