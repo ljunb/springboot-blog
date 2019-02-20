@@ -48,7 +48,7 @@ public class Article {
     /**
      * 作者姓名
      */
-    private String authorName;
+    private String author;
     /**
      * 文章详细内容
      */

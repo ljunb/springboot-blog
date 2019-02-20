@@ -11,4 +11,4 @@ CREATE TABLE `comment` (
   `be_reply_comment_id` bigint(20) unsigned DEFAULT NULL COMMENT '被回复的评论人id',
   `be_reply_commenter` varchar(50) DEFAULT NULL COMMENT '被回复的评论人姓名',
   PRIMARY KEY (`comment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

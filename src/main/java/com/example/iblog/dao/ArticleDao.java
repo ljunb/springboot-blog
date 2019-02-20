@@ -10,11 +10,19 @@ import java.util.List;
 public interface ArticleDao {
 
     @Select("select * from article")
+    @Results({
+            @Result(id = true, column = "article_id", property = "articleId"),
+            @Result(column = "article_id", property = "commentList",
+                many = @Many(
+                        select = "com.example.iblog.dao.CommentDao.findCommentList",
+                        fetchType = FetchType.LAZY
+                ))
+    })
     public List<Article> findArticleList();
 
     @Insert({
-            "insert into article (title, author_id, content, description, publish_time, last_modify_time, source)",
-            "values (#{title}, #{authorId}, #{content}, #{description}, #{publishTime}, #{lastModifyTime}, #{source})"
+            "insert into article (title, author_id, author, content, description, publish_time, last_modify_time, source)",
+            "values (#{title}, #{authorId}, #{author}, #{content}, #{description}, #{publishTime}, #{lastModifyTime}, #{source})"
     })
     @Options(useGeneratedKeys = true, keyProperty = "article_id")
     public int insertArticle(Article article);

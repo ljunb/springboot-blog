@@ -1,12 +1,9 @@
 package com.example.iblog.services.impl;
 
-import com.example.iblog.common.RequestHelper;
 import com.example.iblog.dao.ArticleDao;
 import com.example.iblog.dao.AuthorDao;
-import com.example.iblog.dao.CommentDao;
 import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
-import com.example.iblog.domain.Comment;
 import com.example.iblog.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,25 +19,16 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
     @Autowired
     private AuthorDao authorDao;
-    @Autowired
-    private CommentDao commentDao;
 
     @Override
     public List<Article> getArticleList() {
-        List<Article> articleList = articleDao.findArticleList();
-
-        for (Article article: articleList) {
-            Author author = authorDao.findAuthor(article.getAuthorId());
-            article.setAuthorName(author.getName());
-            List<Comment> commentList = RequestHelper.getArticleCommentList(commentDao, authorDao, article);
-            article.setCommentList(commentList);
-        }
-
-        return articleList;
+        return articleDao.findArticleList();
     }
 
     @Override
     public int createArticle(Article article) {
+        Author author = authorDao.findAuthor(article.getAuthorId());
+        article.setAuthor(author.getName());
         article.setPublishTime(new Date());
         article.setLastModifyTime(new Date());
         return articleDao.insertArticle(article);

@@ -19,6 +19,7 @@ CREATE TABLE `author` (
   `sex` int(1) DEFAULT NULL COMMENT '性别',
   `birthday` date DEFAULT NULL COMMENT '生日',
   `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '住址',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
@@ -34,6 +35,7 @@ CREATE TABLE `article` (
   `publish_time` date DEFAULT NULL COMMENT '发布时间',
   `last_modify_time` date DEFAULT NULL COMMENT '最后修改时间',
   `author_id` bigint(20) unsigned DEFAULT NULL COMMENT '作者id',
+  `author` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '作者姓名',
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文章内容',
   `source` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文章来源',
   PRIMARY KEY (`article_id`)

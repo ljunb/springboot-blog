@@ -3,6 +3,7 @@ package com.example.iblog.dao;
 import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -53,5 +54,14 @@ public interface AuthorDao {
     public int deleteAuthorById(BigInteger authorId);
 
     @Select("select * from article where author_id = #{authorId}")
+    @Results({
+            @Result(id = true, column = "article_id", property = "articleId"),
+            @Result(column = "article_id", property = "commentList",
+                many = @Many(
+                        select = "com.example.iblog.dao.CommentDao.findCommentList",
+                        fetchType = FetchType.LAZY
+                )
+            )
+    })
     public List<Article> findArticleList(BigInteger authorId);
 }

@@ -33,7 +33,7 @@ public class IblogApplicationTests {
         Article article = new Article();
         article.setTitle("article 9");
         article.setDescription("desc 9");
-        article.setAuthorName("ljunb");
+        article.setAuthor("ljunb");
         int status = articleService.createArticle(article);
         System.out.println("create article status >> " + status);
     }
@@ -44,7 +44,7 @@ public class IblogApplicationTests {
         article.setArticleId(BigInteger.ONE);
         article.setTitle("article 1 new title");
         article.setDescription("article 1 new desc");
-        article.setAuthorName("article 1 new author");
+        article.setAuthor("article 1 new author");
         int status = articleService.modifyArticle(article);
         System.out.println("modify article status >> " + status);
     }

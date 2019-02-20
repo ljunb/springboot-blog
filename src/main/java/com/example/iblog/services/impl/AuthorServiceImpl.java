@@ -1,6 +1,5 @@
 package com.example.iblog.services.impl;
 
-import com.example.iblog.common.RequestHelper;
 import com.example.iblog.dao.AuthorDao;
 import com.example.iblog.dao.CommentDao;
 import com.example.iblog.domain.Article;
@@ -47,16 +46,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Article> getArticleList(BigInteger authorId) {
-        List<Article> articleList = authorDao.findArticleList(authorId);
-        Author author = authorDao.findAuthor(authorId);
-
-        for (Article article: articleList) {
-            article.setAuthorName(author.getName());
-            List<Comment> commentList = RequestHelper.getArticleCommentList(commentDao, authorDao, article);
-            article.setCommentList(commentList);
-        }
-
-        return articleList;
+        return authorDao.findArticleList(authorId);
     }
 
     @Override
