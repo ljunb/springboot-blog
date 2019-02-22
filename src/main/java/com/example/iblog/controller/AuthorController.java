@@ -1,5 +1,6 @@
 package com.example.iblog.controller;
 
+import com.example.iblog.common.ConvertUtils;
 import com.example.iblog.common.PageResponseResult;
 import com.example.iblog.common.ResponseResult;
 import com.example.iblog.common.ServiceErrorCode;
@@ -7,6 +8,7 @@ import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
 import com.example.iblog.domain.Comment;
 import com.example.iblog.services.impl.AuthorServiceImpl;
+import com.example.iblog.vo.AuthorVO;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,17 +29,21 @@ public class AuthorController {
 
     @ApiOperation("获取作者列表")
     @GetMapping
-    public ResponseResult<List<Author>> getAuthorList() {
-        ResponseResult<List<Author>> responseResult = new ResponseResult();
+    public ResponseResult<List<AuthorVO>> getAuthorList() {
+        ResponseResult<List<AuthorVO>> responseResult = new ResponseResult();
         try {
             List<Author> authors = authorService.getAuthorList();
-            if (authors != null) {
-                responseResult.setResult(authors);
-                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-            } else {
-                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-                responseResult.setMessage(ServiceErrorCode.REMOVE_RESOURCE_ERROR.getMessage());
+            List<AuthorVO> authorVOs = ConvertUtils.convertFromList(authors, AuthorVO.class);
+            for (AuthorVO authorVO: authorVOs) {
+                for (Author author: authors) {
+                    if (authorVO.getAuthorId().longValue() == author.getAuthorId().longValue()) {
+                        authorVO.setSexName(ConvertUtils.convertSex(author.getSex()));
+                        break;
+                    }
+                }
             }
+            responseResult.setResult(authorVOs);
+            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
             responseResult.setMessage(e.getMessage());
@@ -48,12 +54,14 @@ public class AuthorController {
     @ApiOperation(value = "获取作者信息", notes = "根据authorId获取用户信息")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @GetMapping("/{authorId}")
-    public ResponseResult<Author> getAuthor(@PathVariable BigInteger authorId) {
-        ResponseResult<Author> responseResult = new ResponseResult();
+    public ResponseResult<AuthorVO> getAuthor(@PathVariable BigInteger authorId) {
+        ResponseResult<AuthorVO> responseResult = new ResponseResult();
         try {
             Author author = authorService.getAuthor(authorId);
-            if (author != null) {
-                responseResult.setResult(author);
+            AuthorVO authorVO = ConvertUtils.convertFromObject(author, AuthorVO.class);
+            if (authorVO != null) {
+                authorVO.setSexName(ConvertUtils.convertSex(author.getSex()));
+                responseResult.setResult(authorVO);
                 responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
             } else {
                 responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
@@ -84,7 +92,7 @@ public class AuthorController {
 
     @ApiOperation(value = "获取文章列表", notes = "根据authorId获取该作者下的所有文章")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
-    @GetMapping("/{authorId}/articlelist")
+    @GetMapping("/{authorId}/articleList")
     public PageResponseResult<Article> getArticleListByAuthorId(
             @PathVariable BigInteger authorId,
             @RequestParam(defaultValue = "1", value = "pageNum") Integer pageNum,
@@ -128,7 +136,7 @@ public class AuthorController {
 
     @ApiOperation(value = "获取作者评论列表", notes = "根据authorId获取该作者的所有评论")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
-    @GetMapping("/{authorId}/commentlist")
+    @GetMapping("/{authorId}/commentList")
     public ResponseResult getArticleListByAuthorId(@PathVariable BigInteger authorId) {
         ResponseResult responseResult = new ResponseResult();
         try {

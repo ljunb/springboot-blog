@@ -28,13 +28,8 @@ public class ArticleController {
         ResponseResult<List<Article>> responseResult = new ResponseResult();
         try {
             List<Article> articleList = articleService.getArticleList();
-            if (articleList != null) {
-                responseResult.setResult(articleList);
-                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
-            } else {
-                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-                responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
-            }
+            responseResult.setResult(articleList);
+            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
         } catch (Exception e) {
             responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
             responseResult.setMessage(e.getMessage());
