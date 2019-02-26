@@ -1,7 +1,7 @@
 package com.example.iblog.controller;
 
 import com.example.iblog.common.ResponseResult;
-import com.example.iblog.common.ServiceErrorCode;
+import com.example.iblog.common.ResponseCodeEnum;
 import com.example.iblog.domain.Comment;
 import com.example.iblog.services.impl.CommentServiceImpl;
 import io.swagger.annotations.Api;
@@ -26,32 +26,32 @@ public class CommentController {
     @ApiOperation(value = "添加文章评论", notes = "根据评论对象添加文章下的评论")
     @ApiImplicitParam(name = "comment", value = "评论对象实体", required = true, dataType = "Comment")
     @PostMapping("/create")
-    public ResponseResult createComment(@Valid @RequestBody Comment comment) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Comment> createComment(@Valid @RequestBody Comment comment) {
         try {
-            commentService.createComment(comment);
-            responseResult.setSuccess(true);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            int resultCode = commentService.createComment(comment);
+            if (resultCode > 0) {
+                return new ResponseResult<>(comment, ResponseCodeEnum.SERVICE_OK);
+            } else {
+                return new ResponseResult<>(ResponseCodeEnum.INSERT_RESOURCE_ERROR);
+            }
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.INSERT_RESOURCE_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 
     @ApiOperation(value = "回复文章评论", notes = "根据评论对象回复文章评论")
     @ApiImplicitParam(name = "comment", value = "回复的评论对象实体", required = true, dataType = "Comment")
     @PostMapping("/reply")
-    public ResponseResult replyComment(@Valid @RequestBody Comment comment) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Comment> replyComment(@Valid @RequestBody Comment comment) {
         try {
-            commentService.createReply(comment);
-            responseResult.setSuccess(true);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            int resultCode = commentService.createReply(comment);
+            if (resultCode > 0) {
+                return new ResponseResult<>(comment, ResponseCodeEnum.SERVICE_OK);
+            } else {
+                return new ResponseResult<>(ResponseCodeEnum.INSERT_RESOURCE_ERROR);
+            }
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.MODIFY_RESOURCE_ERROR.getCode());
-            responseResult.setMessage(ServiceErrorCode.MODIFY_RESOURCE_ERROR.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 }

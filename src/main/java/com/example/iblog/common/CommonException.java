@@ -11,9 +11,6 @@ public class CommonException {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseResult exceptionHandler(Exception e) {
-        ResponseResult responseResult = new ResponseResult();
-        responseResult.setErrorCode(0);
-        responseResult.setMessage(e.getMessage() + "Common");
-        return responseResult;
+        return new ResponseResult(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
     }
 }

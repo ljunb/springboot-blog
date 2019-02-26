@@ -10,19 +10,25 @@ public class ResponseResult<T> implements Serializable {
 
     private T result;
     private boolean isSuccess;
-    private int errorCode;
+    private int statusCode;
     private String message;
 
-    public ResponseResult() {}
-
-    public ResponseResult(T result) {
+    public ResponseResult(T result, ResponseCodeEnum responseCodeEnum) {
         this.result = result;
         this.isSuccess = true;
+        this.statusCode = responseCodeEnum.getCode();
+        this.message = responseCodeEnum.getMessage();
     }
 
-    public ResponseResult(int errorCode, String message) {
+    public ResponseResult(ResponseCodeEnum responseCodeEnum) {
         this.isSuccess = false;
-        this.errorCode = errorCode;
+        this.statusCode = responseCodeEnum.getCode();
+        this.message = responseCodeEnum.getMessage();
+    }
+
+    public ResponseResult(int statusCode, String message) {
+        this.isSuccess = false;
+        this.statusCode = statusCode;
         this.message = message;
     }
 
@@ -43,13 +49,13 @@ public class ResponseResult<T> implements Serializable {
         isSuccess = success;
     }
 
-    public int getErrorCode() {
-        return errorCode;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setErrorCode(int errorCode) {
+    public void setStatusCode(int statusCode) {
         this.isSuccess = false;
-        this.errorCode = errorCode;
+        this.statusCode = statusCode;
     }
 
     public String getMessage() {
@@ -60,17 +66,12 @@ public class ResponseResult<T> implements Serializable {
         this.message = message;
     }
 
-    public void setError(ResponseResult<?> responseResult) {
-        this.setErrorCode(responseResult.getErrorCode());
-        this.setMessage(responseResult.getMessage());
-    }
-
     @Override
     public String toString() {
         return "ResponseResult{" +
                 "result=" + result +
                 ", isSuccess=" + isSuccess +
-                ", errorCode='" + errorCode + '\'' +
+                ", statusCode='" + statusCode + '\'' +
                 ", message='" + message + '\'' +
                 '}';
     }

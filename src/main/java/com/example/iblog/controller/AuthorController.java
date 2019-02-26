@@ -3,7 +3,7 @@ package com.example.iblog.controller;
 import com.example.iblog.common.ConvertUtils;
 import com.example.iblog.common.PageResponseResult;
 import com.example.iblog.common.ResponseResult;
-import com.example.iblog.common.ServiceErrorCode;
+import com.example.iblog.common.ResponseCodeEnum;
 import com.example.iblog.domain.Article;
 import com.example.iblog.domain.Author;
 import com.example.iblog.domain.Comment;
@@ -30,7 +30,6 @@ public class AuthorController {
     @ApiOperation("获取作者列表")
     @GetMapping
     public ResponseResult<List<AuthorVO>> getAuthorList() {
-        ResponseResult<List<AuthorVO>> responseResult = new ResponseResult();
         try {
             List<Author> authors = authorService.getAuthorList();
             List<AuthorVO> authorVOs = ConvertUtils.convertFromList(authors, AuthorVO.class);
@@ -42,52 +41,44 @@ public class AuthorController {
                     }
                 }
             }
-            responseResult.setResult(authorVOs);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            return new ResponseResult<>(authorVOs, ResponseCodeEnum.SERVICE_OK);
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 
     @ApiOperation(value = "获取作者信息", notes = "根据authorId获取用户信息")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @GetMapping("/{authorId}")
     public ResponseResult<AuthorVO> getAuthor(@PathVariable BigInteger authorId) {
-        ResponseResult<AuthorVO> responseResult = new ResponseResult();
         try {
             Author author = authorService.getAuthor(authorId);
             AuthorVO authorVO = ConvertUtils.convertFromObject(author, AuthorVO.class);
             if (authorVO != null) {
                 authorVO.setSexName(ConvertUtils.convertSex(author.getSex()));
-                responseResult.setResult(authorVO);
-                responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+                return new ResponseResult<>(authorVO, ResponseCodeEnum.SERVICE_OK);
             } else {
-                responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-                responseResult.setMessage(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getMessage());
+                return new ResponseResult<>(ResponseCodeEnum.RESOURCE_NOT_FOUNDED_ERROR);
             }
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 
     @ApiOperation(value = "添加作者", notes = "根据Author对象创建作者")
     @ApiImplicitParam(name = "author", value = "作者对象实体", required = true, dataType = "Author")
     @PostMapping("/create")
-    public ResponseResult createAuthor(@Valid @RequestBody Author author) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<Author> createAuthor(@Valid @RequestBody Author author) {
         try {
-            authorService.createAuthor(author);
-            responseResult.setSuccess(true);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            int resultCode = authorService.createAuthor(author);
+            if (resultCode > 0) {
+                return new ResponseResult<>(author, ResponseCodeEnum.SERVICE_OK);
+            } else {
+                return new ResponseResult<>(ResponseCodeEnum.INSERT_RESOURCE_ERROR);
+            }
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.INSERT_RESOURCE_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 
     @ApiOperation(value = "获取文章列表", notes = "根据authorId获取该作者下的所有文章")
@@ -99,53 +90,50 @@ public class AuthorController {
             @RequestParam(defaultValue = "10", value = "pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Article> articleList = authorService.getArticleList(authorId);
-        return new PageResponseResult<Article>(articleList);
+        return new PageResponseResult<>(articleList);
     }
 
     @ApiOperation(value = "更新作者信息", notes = "根据Author实体更新作者信息")
     @ApiImplicitParam(name = "author", value = "作者对象实体", required = true, dataType = "Author")
     @PutMapping("/modify")
     public ResponseResult modifyAuthor(@RequestBody Author author) {
-        ResponseResult responseResult = new ResponseResult();
         try {
-            authorService.modifyAuthor(author);
-            responseResult.setSuccess(true);
-            responseResult.setMessage(ServiceErrorCode.SERVICE_OK.getMessage());
+            int resultCode = authorService.modifyAuthor(author);
+            if (resultCode > 0) {
+                return new ResponseResult<>(author, ResponseCodeEnum.SERVICE_OK);
+            } else {
+                return new ResponseResult<>(ResponseCodeEnum.MODIFY_RESOURCE_ERROR);
+            }
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.MODIFY_RESOURCE_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 
     @ApiOperation(value = "删除作者", notes = "根据authorId删除指定作者")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @DeleteMapping("/{authorId}")
-    public ResponseResult removeAuthor(@PathVariable BigInteger authorId) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<BigInteger> removeAuthor(@PathVariable BigInteger authorId) {
         try {
-            authorService.removeAuthorById(authorId);
-            responseResult.setSuccess(true);
-            responseResult.setMessage("删除作者成功");
+            int resultCode = authorService.removeAuthorById(authorId);
+            if (resultCode > 0) {
+                return new ResponseResult<>(authorId, ResponseCodeEnum.SERVICE_OK);
+            } else {
+                return new ResponseResult<>(ResponseCodeEnum.REMOVE_RESOURCE_ERROR);
+            }
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.REMOVE_RESOURCE_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 
     @ApiOperation(value = "获取作者评论列表", notes = "根据authorId获取该作者的所有评论")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
     @GetMapping("/{authorId}/commentList")
-    public ResponseResult getArticleListByAuthorId(@PathVariable BigInteger authorId) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult<List<Comment>> getArticleListByAuthorId(@PathVariable BigInteger authorId) {
         try {
             List<Comment> commentList = authorService.getCommentList(authorId);
-            responseResult.setResult(commentList);
+            return new ResponseResult<>(commentList, ResponseCodeEnum.SERVICE_OK);
         } catch (Exception e) {
-            responseResult.setErrorCode(ServiceErrorCode.RESOURCE_NOT_FOUNDED_ERROR.getCode());
-            responseResult.setMessage(e.getMessage());
+            return new ResponseResult<>(ResponseCodeEnum.SERVICE_ERROR.getCode(), e.getMessage());
         }
-        return responseResult;
     }
 }
