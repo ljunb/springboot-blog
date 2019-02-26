@@ -23,7 +23,7 @@ public class ArticleController {
     ArticleServiceImpl articleService;
 
     @ApiOperation("获取所有文章列表")
-    @GetMapping()
+    @GetMapping("/list")
     public ResponseResult<List<Article>> getArticleList() {
         try {
             List<Article> articleList = articleService.getArticleList();
@@ -83,7 +83,7 @@ public class ArticleController {
 
     @ApiOperation(value = "删除文章", notes = "根据authorId删除指定文章")
     @ApiImplicitParam(name = "articleId", value = "文章id", required = true, dataType = "number")
-    @DeleteMapping("/{articleId}")
+    @DeleteMapping("/{articleId}/delete")
     public ResponseResult<BigInteger> removeArticleById(@PathVariable BigInteger articleId) {
         try {
             int resultCode = articleService.removeArticleById(articleId);

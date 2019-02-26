@@ -28,7 +28,7 @@ public class AuthorController {
     private AuthorServiceImpl authorService;
 
     @ApiOperation("获取作者列表")
-    @GetMapping
+    @GetMapping("/list")
     public ResponseResult<List<AuthorVO>> getAuthorList() {
         try {
             List<Author> authors = authorService.getAuthorList();
@@ -83,7 +83,7 @@ public class AuthorController {
 
     @ApiOperation(value = "获取文章列表", notes = "根据authorId获取该作者下的所有文章")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
-    @GetMapping("/{authorId}/articleList")
+    @GetMapping("/{authorId}/articles")
     public PageResponseResult<Article> getArticleListByAuthorId(
             @PathVariable BigInteger authorId,
             @RequestParam(defaultValue = "1", value = "pageNum") Integer pageNum,
@@ -111,7 +111,7 @@ public class AuthorController {
 
     @ApiOperation(value = "删除作者", notes = "根据authorId删除指定作者")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
-    @DeleteMapping("/{authorId}")
+    @DeleteMapping("/{authorId}/delete")
     public ResponseResult<BigInteger> removeAuthor(@PathVariable BigInteger authorId) {
         try {
             int resultCode = authorService.removeAuthorById(authorId);
@@ -127,7 +127,7 @@ public class AuthorController {
 
     @ApiOperation(value = "获取作者评论列表", notes = "根据authorId获取该作者的所有评论")
     @ApiImplicitParam(name = "authorId", value = "作者id", required = true, dataType = "number")
-    @GetMapping("/{authorId}/commentList")
+    @GetMapping("/{authorId}/comments")
     public ResponseResult<List<Comment>> getArticleListByAuthorId(@PathVariable BigInteger authorId) {
         try {
             List<Comment> commentList = authorService.getCommentList(authorId);
